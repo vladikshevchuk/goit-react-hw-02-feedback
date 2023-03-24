@@ -20,13 +20,33 @@ class Feedback extends Component {
     this.setState(prevState => ({ bad: prevState.bad + 1 }));
   };
 
+  countTotalFeedBack = () => {
+    const { good, neutral, bad } = this.state;
+    let total = good + neutral + bad;
+
+    return total;
+  };
+
+  countPositiveFeedbackPercentage = () => {
+    const { good, neutral, bad } = this.state;
+    let positiveFeedback = 0;
+
+    positiveFeedback = (good / (good + neutral + bad)) * 100;
+
+    if (isNaN(positiveFeedback)) {
+      return 'no feedback';
+    }
+
+    return `${positiveFeedback.toFixed(0)} %`;
+  };
+
   render() {
     const { good, neutral, bad } = this.state;
 
     return (
       <section>
         <h2>Please leave feedback</h2>
-        <div className='btns'>
+        <div className="btns">
           <button type="button" onClick={this.onClickGood}>
             Good
           </button>
@@ -42,10 +62,12 @@ class Feedback extends Component {
           <p>Good: {good}</p>
           <p>Netural: {neutral}</p>
           <p>Bad: {bad}</p>
+          <p>Total: {this.countTotalFeedBack()}</p>
+          <p>Positive feedback: {this.countPositiveFeedbackPercentage()}</p>
         </div>
       </section>
     );
   }
-}
+};
 
 export default Feedback;
