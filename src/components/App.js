@@ -3,6 +3,7 @@ import FeedbackOptions from './FeedbackOptions/FeedbackOptions';
 import Section from './Section/Section';
 import Statistics from './Statistics/Statistics';
 import { Div } from './App.styled';
+import Notification from './Notification/Notification';
 
 class App extends Component {
   state = {
@@ -37,7 +38,7 @@ class App extends Component {
     positiveFeedback = (good / (good + neutral + bad)) * 100;
 
     if (isNaN(positiveFeedback)) {
-      return 'no feedback yet';
+      return 0;
     }
 
     return `${positiveFeedback.toFixed(0)} %`;
@@ -56,13 +57,13 @@ class App extends Component {
           />
         </Section>
         <Section title="Statistics">
-          <Statistics
+          {good > 0 || neutral > 0 || bad > 0 ? <Statistics
             good={good}
             neutral={neutral}
             bad={bad}
             total={this.countTotalFeedBack()}
             positiveFeedback={this.countPositiveFeedbackPercentage()}
-          />
+          /> : <Notification message="There is no feedback" />}
         </Section>
       </Div>
     );
